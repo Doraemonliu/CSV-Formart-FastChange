@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>编辑CSV文件</title>
+    <style>
+        .feature-notice {
+            background-color: #e6f7ff;
+            border-left: 4px solid #1890ff;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        td input {
+            width: 100%;
+            min-width: 100px;
+            box-sizing: border-box;
+        }
+    </style>
+    <script>
+        function handleEnterKey(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const input = event.target;
+                const commaIndex = input.value.indexOf(',');
+                if (commaIndex === -1) {
+                    input.value += ',';
+                }
+                input.style.width = ((input.value.length + 1) * 8) + 'px';
+            }
+        }
+
+        function autoExpand(input) {
+            input.style.width = ((input.value.length + 1) * 8) + 'px';
+        }
+    </script>
+</head>
+<body>
+    <div class="feature-notice">
+        提示：在单元格中按下Enter键会自动添加逗号分隔符。
+    </div>
+    <h1>编辑CSV文件: {{ filename }}</h1>
+    <form action="/save" method="post">
+        <input type="hidden" name="filename" value="{{ filename }}">
+        <table border="1">
+            <thead>
+                <tr>
+                    {% for column in columns %}
+                    <th>{{ column }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    {% for cell in row %}
+                    <td><input type="text" name="data[]" value="{{ cell }}" onkeydown="handleEnterKey(event)" oninput="autoExpand(this)"></td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <label for="encoding">选择编码格式:</label>
+        <select name="encoding" id="encoding">
+            <option value="utf-8">UTF-8</option>
+            <option value="gbk">GBK</option>
+            <option value="gb2312">GB2312</option>
+            <option value="big5">Big5</option>
+        </select>
+        <button type="submit">保存文件</button>
+    </form>
+</body>
+</html>

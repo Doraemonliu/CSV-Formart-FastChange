@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV文件管理</title>
+</head>
+<body>
+    <h1>CSV文件管理</h1>
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".csv">
+        <button type="submit">上传</button>
+    </form>
+    <br>
+    <a href="/new"><button>新建CSV文件</button></a>
+</body>
+</html>
